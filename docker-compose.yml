@@ -1,0 +1,21 @@
+services:
+  taskflow-mysql:
+    container_name: taskflow-mysql
+    image: mysql:latest
+    ports: ["3308:3306"]
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: taskflow
+      MYSQL_USER: taskflow
+      MYSQL_PASSWORD: taskflow
+    volumes: [mysql_data:/var/lib/mysql]
+
+  php:
+    container_name: taskflow-php
+    build: .
+    ports: ["8001:8000"]
+    volumes: [./src:/app]
+    depends_on: [taskflow-mysql]
+
+volumes:
+  mysql_data:
